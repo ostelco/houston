@@ -53,7 +53,7 @@ DataUsage.propTypes = {
 function mapStateToProps(state) {
   const firstBalance = _.get(state, 'bundles[0].balance');
   return {
-    balance: firstBalance ? humanReadableBytes(firstBalance) : null
+    balance: isNaN(firstBalance) ? null : humanReadableBytes(firstBalance)
   };
 }
 
