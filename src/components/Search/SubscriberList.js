@@ -14,7 +14,7 @@ const convertToHighlightedText = (text, query) => (
   <Highlighter
     searchWords={[query]}
     autoEscape={true}
-    caseSensitive={true}
+    caseSensitive={false}
     textToHighlight={text}
     highlightTag={Highlight}
   />);
