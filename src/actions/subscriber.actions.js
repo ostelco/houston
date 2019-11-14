@@ -43,7 +43,7 @@ export const subscriberConstants = {
   SUBSCRIBER_BY_EMAIL_FAILURE,
   SUBSCRIPTIONS_FAILURE,
   DELETE_USER_SUCCESS,
-  DELETE_USER_FAILURE,
+  DELETE_USER_FAILURE
 };
 
 export const actions = createActions(
@@ -73,56 +73,61 @@ export const actions = createActions(
   DELETE_USER_FAILURE
 );
 
-const fetchSubscriberById = (id) => ({
+const fetchSubscriberById = id => ({
   [CALL_API]: {
     actions: [
       actions.subscriberByEmailRequest,
       actions.subscriberByEmailSuccess,
-      actions.subscriberByEmailFailure],
+      actions.subscriberByEmailFailure
+    ],
     endpoint: `profiles/${id}`,
     method: 'GET'
   }
 });
 
-const fetchContextById = (id) => ({
+const fetchContextById = id => ({
   [CALL_API]: {
     actions: [
       actions.contextByEmailRequest,
       actions.contextByEmailSuccess,
-      actions.contextByEmailFailure],
+      actions.contextByEmailFailure
+    ],
     endpoint: `context/${id}`,
     method: 'GET'
   }
 });
 
-const fetchSubscriptionsById = (id) => ({
+const fetchSubscriptionsById = id => ({
   [CALL_API]: {
     actions: [
       actions.subscriptionsRequest,
       actions.subscriptionsSuccess,
-      actions.subscriptionsFailure],
+      actions.subscriptionsFailure
+    ],
     endpoint: `profiles/${id}/subscriptions`,
     method: 'GET'
   }
 });
 
-const fetchBundlesById = (id) => ({
+const fetchBundlesById = id => ({
   [CALL_API]: {
     actions: [
       actions.bundlesRequest,
       actions.bundlesSuccess,
-      actions.bundlesFailure],
+      actions.bundlesFailure
+    ],
     endpoint: `bundles/${id}`,
     method: 'GET'
   }
 });
 
-const fetchPaymentHistoryById = (id) => ({
+const fetchPaymentHistoryById = id => ({
   [CALL_API]: {
     actions: [
       actions.paymentHistoryRequest,
       actions.paymentHistorySuccess,
-      actions.paymentHistoryFailure],
+      actions.paymentHistoryFailure
+    ],
     endpoint: `purchases/${id}`,
     method: 'GET'
   }
@@ -133,30 +138,33 @@ const putRefundPurchaseById = (id, purchaseRecordId, reason) => ({
     actions: [
       actions.refundPaymentRequest,
       actions.refundPaymentSuccess,
-      actions.refundPaymentFailure],
+      actions.refundPaymentFailure
+    ],
     endpoint: `refund/${id}`,
     method: 'PUT',
     params: { purchaseRecordId, reason }
   }
 });
 
-const fetchAuditLogsById = (id) => ({
+const fetchAuditLogsById = id => ({
   [CALL_API]: {
     actions: [
       actions.auditLogsRequest,
       actions.auditLogsSuccess,
-      actions.auditLogsFailure],
+      actions.auditLogsFailure
+    ],
     endpoint: `auditLog/${id}`,
     method: 'GET'
   }
 });
 
-const deleteUserById = (id) => ({
+const deleteUserById = id => ({
   [CALL_API]: {
     actions: [
       actions.deleteUserRequest,
       actions.deleteUserSuccess,
-      actions.deleteUserFailure],
+      actions.deleteUserFailure
+    ],
     endpoint: `customer/${id}`,
     allowEmptyResponse: true,
     method: 'DELETE'
@@ -164,12 +172,12 @@ const deleteUserById = (id) => ({
 });
 const { selectSubscriber, clearSubscriber } = currentSubscriberActions;
 // TODO: API based implementaion. Reference: https://github.com/reduxjs/redux/issues/1676
-const getSubscriberList = (email) => (dispatch, getState) => {
+const getSubscriberList = email => (dispatch, getState) => {
   dispatch(clearSubscriber());
-  localStorage.setItem('searchedEmail', email)
+  localStorage.setItem('searchedEmail', email);
 
   email = encodeEmail(email);
-  const handleError = (error) => {
+  const handleError = error => {
     console.log('Error reported.', error);
     dispatch(alertActions.alertError(error));
   };
@@ -184,9 +192,9 @@ const getSubscriberList = (email) => (dispatch, getState) => {
     .catch(handleError);
 };
 
-const selectCurrentSubscriber = (subscriber) => (dispatch, getState) => {
+const selectCurrentSubscriber = subscriber => (dispatch, getState) => {
   dispatch(selectSubscriber(subscriber));
-  const handleError = (error) => {
+  const handleError = error => {
     console.log('Error reported.', error);
     dispatch(alertActions.alertError(error));
   };
@@ -202,7 +210,7 @@ const selectCurrentSubscriber = (subscriber) => (dispatch, getState) => {
 };
 
 const refundPurchase = (purchaseRecordId, reason) => (dispatch, getState) => {
-  const handleError = (error) => {
+  const handleError = error => {
     console.log('Error reported.', error);
     dispatch(alertActions.alertError(error));
   };
@@ -210,7 +218,9 @@ const refundPurchase = (purchaseRecordId, reason) => (dispatch, getState) => {
   // Get the id from the fetched user
   const subscriberId = _.get(getState(), 'currentSubscriber.id');
   if (subscriberId) {
-    return dispatch(putRefundPurchaseById(subscriberId, purchaseRecordId, reason))
+    return dispatch(
+      putRefundPurchaseById(subscriberId, purchaseRecordId, reason)
+    )
       .then(() => {
         return dispatch(fetchPaymentHistoryById(subscriberId));
       })
@@ -218,17 +228,16 @@ const refundPurchase = (purchaseRecordId, reason) => (dispatch, getState) => {
   }
 };
 const deleteUser = () => (dispatch, getState) => {
-  const handleError = (error) => {
+  const handleError = error => {
     console.log('Error reported.', error.message);
-    let message = "Failed to delete user (" + error.message + ")"
+    let message = 'Failed to delete user (' + error.message + ')';
     dispatch(alertActions.alertError({ message }));
   };
 
   // Get the id from the fetched user
   const subscriberId = _.get(getState(), 'currentSubscriber.id');
   if (subscriberId) {
-    return dispatch(deleteUserById(subscriberId))
-      .catch(handleError);
+    return dispatch(deleteUserById(subscriberId)).catch(handleError);
   }
 };
 export const subscriberActions = {

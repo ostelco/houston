@@ -12,7 +12,8 @@ function Context({ context }) {
           src={context}
           displayDataTypes={false}
           displayObjectSize={false}
-          theme={"bright:inverted"} />
+          theme={'bright:inverted'}
+        />
       </CardBody>
     </Card>
   );

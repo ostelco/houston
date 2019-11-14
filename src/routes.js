@@ -1,5 +1,11 @@
 import React from 'react';
-import { Route, BrowserRouter as Router, Redirect, Switch, Link } from 'react-router-dom';
+import {
+  Route,
+  BrowserRouter as Router,
+  Redirect,
+  Switch,
+  Link
+} from 'react-router-dom';
 import { connect } from 'react-redux';
 
 import App from './components/App';
@@ -19,25 +25,24 @@ function ProtectedRoute({ component: Component, ...rest }) {
   return (
     <Route
       {...rest}
-      render={(props) => {
+      render={props => {
         return authService.isAuthenticated() ? (
           <Component {...props} />
         ) : (
-            <Redirect
-              to={{
-                pathname: "/login",
-                state: { from: props.location }
-              }}
-            />
-          );
-      }
-      }
+          <Redirect
+            to={{
+              pathname: '/login',
+              state: { from: props.location }
+            }}
+          />
+        );
+      }}
     />
   );
 }
 
 function login(props) {
-  // Redirect to search 
+  // Redirect to search
   if (props.loggedIn) {
     return <Redirect to="/" />;
   }
@@ -53,7 +58,7 @@ function mapStateToProps(state) {
   return {
     loggedIn
   };
-};
+}
 const Login = connect(mapStateToProps)(login);
 
 function NoMatch() {
@@ -75,18 +80,20 @@ export const makeMainRoutes = () => {
       <Router>
         <div>
           <App />
-          <Switch >
+          <Switch>
             <Route path="/login" component={Login} />
             <ProtectedRoute path="/" exact component={Main} />
-            <Route path="/callback" render={(props) => {
-              handleAuthentication(props);
-              return <Callback {...props} />
-            }} />
+            <Route
+              path="/callback"
+              render={props => {
+                handleAuthentication(props);
+                return <Callback {...props} />;
+              }}
+            />
             <Route component={NoMatch} />
           </Switch>
         </div>
       </Router>
     </Provider>
   );
-}
-
+};

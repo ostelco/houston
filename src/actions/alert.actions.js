@@ -7,7 +7,11 @@ const CLEAR_ALERT = 'CLEAR_ALERT';
 const defaultState = {};
 
 // exports alertSuccess, alertError, clearAlert
-export const alertActions = createActions(ALERT_SUCCESS, ALERT_ERROR, CLEAR_ALERT);
+export const alertActions = createActions(
+  ALERT_SUCCESS,
+  ALERT_ERROR,
+  CLEAR_ALERT
+);
 
 const { alertSuccess, alertError, clearAlert } = alertActions;
 const reducer = handleActions(

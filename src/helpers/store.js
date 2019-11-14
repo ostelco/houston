@@ -14,6 +14,7 @@ let composeEnhancers = composeWithDevTools({
 if (!isChrome()) {
   composeEnhancers = compose;
 }
-export const store = createStore(rootReducer, /* preloadedState, */ composeEnhancers(
-  applyMiddleware(thunk, api, logger)
-));
+export const store = createStore(
+  rootReducer,
+  /* preloadedState, */ composeEnhancers(applyMiddleware(thunk, api, logger))
+);

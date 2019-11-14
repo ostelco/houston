@@ -19,7 +19,6 @@ import {
   auditLogs
 } from './subscriber.reducer';
 
-
 const appReducer = combineReducers({
   authentication,
   alert,
@@ -42,7 +41,7 @@ function checkForAuthenticationFailures(errorObj) {
 }
 
 function getAuthOnlyState(state) {
-  const auth = _.get(state, "authentication");
+  const auth = _.get(state, 'authentication');
   return {
     authentication: auth
   };
@@ -59,8 +58,8 @@ const rootReducer = (state, action) => {
       checkForAuthenticationFailures(_.get(action, 'payload.errorObj'));
       break;
     case subscriberConstants.DELETE_USER_SUCCESS:
-        state = getAuthOnlyState(state);
-        break;
+      state = getAuthOnlyState(state);
+      break;
     default:
       break;
   }

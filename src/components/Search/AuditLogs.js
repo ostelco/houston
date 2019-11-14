@@ -3,61 +3,63 @@ import _ from 'lodash';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { Card, CardBody } from 'reactstrap';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import ReactTable from "react-table"
-import "react-table/react-table.css";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import ReactTable from 'react-table';
+import 'react-table/react-table.css';
 
 import { convertTimestampToDate } from '../../helpers';
 
 function severityToIcon(severity) {
   switch (_.toLower(severity)) {
-    case "warn":
-      return "exclamation-triangle";
-    case "error":
-      return "bomb";
+    case 'warn':
+      return 'exclamation-triangle';
+    case 'error':
+      return 'bomb';
     default:
-      return "info"
+      return 'info';
   }
 }
 
 const AuditLogs = ({ auditLogs }) => {
   let columns = [
     {
-      Header: "Date",
-      id: "1",
+      Header: 'Date',
+      id: '1',
       accessor: d => convertTimestampToDate(d.timestamp),
       width: 200
     },
     {
-      Header: "Severity",
-      id: "2",
-      accessor: "severity",
+      Header: 'Severity',
+      id: '2',
+      accessor: 'severity',
       width: 200,
       Cell: row => (
         <div
           style={{
-            backgroundColor: row.value === "INFO" ? '#85cc00'
-              : row.value === "WARN" ? '#ffbf00'
+            backgroundColor:
+              row.value === 'INFO'
+                ? '#85cc00'
+                : row.value === 'WARN'
+                ? '#ffbf00'
                 : '#ff2e00',
             borderRadius: '2px',
             transition: 'all .2s ease-out'
           }}
         >
           &nbsp;&nbsp;&nbsp;
-            <FontAwesomeIcon icon={severityToIcon(row.value)} />
+          <FontAwesomeIcon icon={severityToIcon(row.value)} />
           &nbsp;&nbsp;
-            {row.value}
+          {row.value}
         </div>
       )
     },
     {
-      Header: "Message",
-      id: "3",
-      accessor: "message",
-      filterMethod: (filter, row) =>
-        _.includes(row[filter.id], filter.value)
+      Header: 'Message',
+      id: '3',
+      accessor: 'message',
+      filterMethod: (filter, row) => _.includes(row[filter.id], filter.value)
     }
-  ]
+  ];
 
   return (
     <Card>
@@ -71,7 +73,7 @@ const AuditLogs = ({ auditLogs }) => {
       </CardBody>
     </Card>
   );
-}
+};
 
 AuditLogs.propTypes = {
   auditLogs: PropTypes.array

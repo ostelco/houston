@@ -1,4 +1,3 @@
-
 const DEV_AUTH_CONFIG = {
   domain: 'redotter-admin-dev.eu.auth0.com',
   clientId: '9DgdUDakjmn3O00NkDKna0YAsZanYqof',
@@ -21,10 +20,12 @@ const DEPLOYED_PROD_AUTH_CONFIG = {
 };
 
 export function getAuthConfig() {
-  if (process.env.REACT_APP_DEPLOYMENT_ENV === "development") {
+  if (process.env.REACT_APP_DEPLOYMENT_ENV === 'development') {
     return DEPLOYED_DEV_AUTH_CONFIG;
-  } else if (process.env.REACT_APP_DEPLOYMENT_ENV === "production" ||
-    process.env.NODE_ENV === "production") {
+  } else if (
+    process.env.REACT_APP_DEPLOYMENT_ENV === 'production' ||
+    process.env.NODE_ENV === 'production'
+  ) {
     return DEPLOYED_PROD_AUTH_CONFIG;
   } else {
     return DEV_AUTH_CONFIG;
@@ -35,11 +36,15 @@ export function getAPIRoot() {
   const DEV_API_ROOT = 'https://houston-api.dev.oya.world/support/';
   const PROD_API_ROOT = 'https://houston-api.oya.world/support/';
 
-  if (process.env.REACT_APP_DEPLOYMENT_ENV === "development" ||
-    process.env.NODE_ENV === "development") {
+  if (
+    process.env.REACT_APP_DEPLOYMENT_ENV === 'development' ||
+    process.env.NODE_ENV === 'development'
+  ) {
     return DEV_API_ROOT;
-  } else if (process.env.REACT_APP_DEPLOYMENT_ENV === "production" ||
-    process.env.NODE_ENV === "production") {
+  } else if (
+    process.env.REACT_APP_DEPLOYMENT_ENV === 'production' ||
+    process.env.NODE_ENV === 'production'
+  ) {
     return PROD_API_ROOT;
   } else {
     return DEV_API_ROOT;

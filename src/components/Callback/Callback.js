@@ -19,7 +19,7 @@ class Callback extends Component {
       bottom: 0,
       left: 0,
       right: 0,
-      backgroundColor: 'white',
+      backgroundColor: 'white'
     };
 
     return (
@@ -35,6 +35,6 @@ function mapStateToProps(state) {
   return {
     loggedIn
   };
-};
+}
 
 export default connect(mapStateToProps)(Callback);

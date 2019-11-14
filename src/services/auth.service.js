@@ -29,7 +29,9 @@ class Auth {
 
   handleAuthentication(dispatch, hash) {
     if (this.user != null) {
-      console.log('Valid session in memory, callback is called before the session is cleared.');
+      console.log(
+        'Valid session in memory, callback is called before the session is cleared.'
+      );
       return;
     }
     this.user = {}; // initialize
@@ -52,7 +54,9 @@ class Auth {
 
   setSession(authResult) {
     // Set the time that the access token will expire at
-    let expiresAt = JSON.stringify((authResult.expiresIn * 1000) + new Date().getTime());
+    let expiresAt = JSON.stringify(
+      authResult.expiresIn * 1000 + new Date().getTime()
+    );
     const { accessToken } = authResult;
     localStorage.setItem('access_token', accessToken);
     localStorage.setItem('expires_at', expiresAt);
@@ -69,7 +73,9 @@ class Auth {
 
   loadCurrentSession = () => {
     if (this.user !== null) {
-      console.log('Valid session in memory, clear this before calling loadCurrentSession');
+      console.log(
+        'Valid session in memory, clear this before calling loadCurrentSession'
+      );
       return;
     }
     const accessToken = localStorage.getItem('access_token');
@@ -87,13 +93,13 @@ class Auth {
     const email = localStorage.getItem('email');
     const picture = localStorage.getItem('picture');
     this.user = { accessToken, expiresAt, name, email, picture };
-    setTimeout(() =>  store.dispatch(authActions.loginSuccess(this.user)));
-  }
+    setTimeout(() => store.dispatch(authActions.loginSuccess(this.user)));
+  };
 
   logout() {
     this.clearLocalStorage();
     // navigate to the home route
-    this.webAuth.logout({returnTo: authConfig.homeUrl});
+    this.webAuth.logout({ returnTo: authConfig.homeUrl });
   }
 
   clearLocalStorage() {
@@ -114,7 +120,7 @@ class Auth {
   }
 
   authHeader() {
-    const user = _.get(store.getState(), "authentication.user");
+    const user = _.get(store.getState(), 'authentication.user');
     if (user && this.isTokenValid(user.expiresAt)) {
       return `Bearer ${user.accessToken}`;
     }
@@ -124,18 +130,18 @@ class Auth {
   getHeader = () => {
     const header = this.authHeader();
     if (!header) {
-      console.log("apiCaller: Authentication failed");
+      console.log('apiCaller: Authentication failed');
       const error = {
         code: authConstants.AUTHENTICATION_FAILURE,
-        message: "Authentication failed"
+        message: 'Authentication failed'
       };
       return { error };
     }
     return { header };
-  }
+  };
 
   isAuthenticated() {
-    const user = _.get(store.getState(), "authentication.user");
+    const user = _.get(store.getState(), 'authentication.user');
     if (user) {
       if (this.isTokenValid(user.expiresAt)) {
         return true;
@@ -146,7 +152,6 @@ class Auth {
     }
     return false;
   }
-
 }
 const auth = new Auth();
 export const authService = auth;

@@ -10,17 +10,19 @@ import AlertMessage from './Alert';
 const Main = () => {
   const dispatch = useDispatch();
   const currentSubscriber = useSelector(state => state.currentSubscriber);
-  const hasCurrentSubscriber = (currentSubscriber.id) || false;
+  const hasCurrentSubscriber = currentSubscriber.id || false;
 
   return (
     <div className="container">
       <AlertMessage />
-      <SearchForm onSubmit={(text) => dispatch(subscriberActions.getSubscriberList(text))} />
+      <SearchForm
+        onSubmit={text => dispatch(subscriberActions.getSubscriberList(text))}
+      />
       <br />
       <SubscriberList />
-      { hasCurrentSubscriber && (<SubscriberDetails />)}
+      {hasCurrentSubscriber && <SubscriberDetails />}
     </div>
   );
-}
+};
 
 export default Main;

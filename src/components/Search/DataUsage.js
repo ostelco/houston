@@ -15,8 +15,8 @@ const DataUsage = ({ balance }) => {
     // TODO call the method to give additional data
   }
 
-  const modalHeading = `Confirm additional Data`
-  const modalText = `Do you really want to give this user an additional 1 GB of Data ?`
+  const modalHeading = `Confirm additional Data`;
+  const modalText = `Do you really want to give this user an additional 1 GB of Data ?`;
   // don't show the component when balance string is empty
   if (!balance) return null;
 
@@ -24,12 +24,14 @@ const DataUsage = ({ balance }) => {
     <Card>
       <CardHeader>Data balance</CardHeader>
       <CardBody>
-        <Row >
+        <Row>
           <Col xs={6} md={4}>
             {`Remaining ${balance}.`}
           </Col>
           <Col xs={6} md={4}>
-            <Button disabled={true} onClick={() => setShowWarning(true)}>{'Give additional 1 GB'}</Button>
+            <Button disabled={true} onClick={() => setShowWarning(true)}>
+              {'Give additional 1 GB'}
+            </Button>
           </Col>
         </Row>
         <WarningModal
@@ -37,18 +39,19 @@ const DataUsage = ({ balance }) => {
           warningText={modalText}
           show={showWarning}
           handleConfirm={handleConfirmModal}
-          handleClose={() => setShowWarning(false)} />
+          handleClose={() => setShowWarning(false)}
+        />
       </CardBody>
     </Card>
   );
-}
+};
 
 DataUsage.propTypes = {
   balance: PropTypes.string
 };
 
 function mapStateToProps(state) {
-  const firstBalance = _.get(state, 'bundles[0].balance')
+  const firstBalance = _.get(state, 'bundles[0].balance');
   return {
     balance: firstBalance ? humanReadableBytes(firstBalance) : null
   };

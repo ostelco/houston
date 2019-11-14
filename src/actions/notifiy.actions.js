@@ -17,7 +17,7 @@ export const notifyConstants = {
   NOTIFY_FAILURE
 };
 
-const defaultState = { type: true , message: '', title: '' };
+const defaultState = { type: true, message: '', title: '' };
 
 const actions = createActions(
   NOTIFY_REQUEST,
@@ -26,23 +26,25 @@ const actions = createActions(
   SET_NOTIFICATION_MESSAGE,
   SET_NOTIFICATION_TITLE,
   SET_NOTIFICATION_TYPE,
-  CLEAR_NOTIFICATION);
+  CLEAR_NOTIFICATION
+);
 
-const { 
+const {
   notifySuccess,
   notifyFailure,
   clearNotification,
   setNotificationMessage,
   setNotificationTitle,
-  setNotificationType,
- } = actions;
+  setNotificationType
+} = actions;
 
 const putNotificationById = (id, title, message) => ({
   [CALL_API]: {
     actions: [
       actions.notifyRequest,
       actions.notifySuccess,
-      actions.notifyFailure],
+      actions.notifyFailure
+    ],
     endpoint: `notify/${id}`,
     method: 'PUT',
     allowEmptyResponse: true,
@@ -50,8 +52,11 @@ const putNotificationById = (id, title, message) => ({
   }
 });
 
-const sendNotificationToSubscriber = (title, message) => (dispatch, getState) => {
-  const handleError = (error) => {
+const sendNotificationToSubscriber = (title, message) => (
+  dispatch,
+  getState
+) => {
+  const handleError = error => {
     console.log('Error reported.', error);
     dispatch(alertActions.alertError(error));
   };
@@ -59,14 +64,15 @@ const sendNotificationToSubscriber = (title, message) => (dispatch, getState) =>
   // Get the id from the fetched user
   const subscriberId = _.get(getState(), 'currentSubscriber.id');
   if (subscriberId) {
-    return dispatch(putNotificationById(subscriberId, title, message))
-      .catch(handleError);
+    return dispatch(putNotificationById(subscriberId, title, message)).catch(
+      handleError
+    );
   }
 };
 
-export const notifyActions =  { ...actions, sendNotificationToSubscriber };
+export const notifyActions = { ...actions, sendNotificationToSubscriber };
 
- const reducer = handleActions(
+const reducer = handleActions(
   {
     [notifySuccess]: () => defaultState,
     [notifyFailure]: () => defaultState,

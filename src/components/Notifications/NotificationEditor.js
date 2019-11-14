@@ -1,5 +1,5 @@
 import React from 'react';
-import { bindActionCreators } from 'redux'
+import { bindActionCreators } from 'redux';
 import { useDispatch, useSelector } from 'react-redux';
 import { Button, Form, FormGroup, Label, Input } from 'reactstrap';
 
@@ -26,7 +26,7 @@ function NotificationEditor({ messageLabel, submitLabel, titleLabel }) {
           name="text"
           id="inputTitle"
           value={title}
-          onChange={(e) => actions.setNotificationTitle(e.target.value)}
+          onChange={e => actions.setNotificationTitle(e.target.value)}
           placeholder="Enter title"
         />
       </FormGroup>
@@ -37,11 +37,13 @@ function NotificationEditor({ messageLabel, submitLabel, titleLabel }) {
           name="text"
           id="inputMessage"
           value={message}
-          onChange={(e) => actions.setNotificationMessage(e.target.value)}
+          onChange={e => actions.setNotificationMessage(e.target.value)}
           placeholder="Enter message"
         />
       </FormGroup>
-      <Button bsstyle="primary" type="submit">{submitLabel}</Button>
+      <Button bsstyle="primary" type="submit">
+        {submitLabel}
+      </Button>
     </Form>
   );
 }

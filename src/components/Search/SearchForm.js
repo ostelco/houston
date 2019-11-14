@@ -19,12 +19,12 @@ function useFormInput(initialValue, submit) {
   function onValidateInput() {
     const type = getTextType(value);
     if (type === 'phonenumber' || type === 'email') {
-      return 'success'
-    };
+      return 'success';
+    }
     const length = value.length;
     if (length > 5) {
-      return 'warning'
-    };
+      return 'warning';
+    }
     return null;
   }
 
@@ -32,8 +32,8 @@ function useFormInput(initialValue, submit) {
 }
 
 export default function SearchForm(props) {
-  let email = localStorage.getItem('searchedEmail')
-  const input = useFormInput(email, props.onSubmit)
+  let email = localStorage.getItem('searchedEmail');
+  const input = useFormInput(email, props.onSubmit);
   return (
     <div className="container">
       <Form onSubmit={input.onSubmit}>
@@ -49,8 +49,10 @@ export default function SearchForm(props) {
                 placeholder="Enter text"
               />
             </Col>
-            <Col xs={"auto"} md={"auto"}>
-              <Button color="outline-primary" type="submit">Search</Button>
+            <Col xs={'auto'} md={'auto'}>
+              <Button color="outline-primary" type="submit">
+                Search
+              </Button>
             </Col>
           </Row>
         </FormGroup>

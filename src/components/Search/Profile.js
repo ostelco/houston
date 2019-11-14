@@ -19,53 +19,61 @@ class Profile extends React.Component {
     this.setState({
       showWarning: false
     });
-  }
+  };
 
   handleShowModal = () => {
     this.setState({
       showWarning: true
     });
-  }
+  };
 
   handleConfirmModal = () => {
     this.props.deleteUser();
     this.handleCloseModal();
-  }
+  };
 
   render() {
-    const modalHeading = `Confirm remove user`
-    const modalText = `Do you really want to remove this user?`
+    const modalHeading = `Confirm remove user`;
+    const modalText = `Do you really want to remove this user?`;
     const props = this.props;
 
     let listItems = null;
     if (Array.isArray(props.subscriptions.items)) {
-      listItems = props.subscriptions.items.map((subscription, index) =>
+      listItems = props.subscriptions.items.map((subscription, index) => (
         <div key={index}>
           <Subscription subscription={subscription} key={index} />
           <hr />
         </div>
-      );
+      ));
     }
     return (
       <Card>
         <CardHeader>Customer</CardHeader>
         <CardBody>
           <Row>
-            <Col xs={2} md={2}>{'Name:'}</Col>
+            <Col xs={2} md={2}>
+              {'Name:'}
+            </Col>
             <Col xs={12} md={8}>{`${props.profile.nickname}`}</Col>
           </Row>
           <Row>
-            <Col xs={2} md={2}>{'Email:'}</Col>
+            <Col xs={2} md={2}>
+              {'Email:'}
+            </Col>
             <Col xs={12} md={8}>{`${props.profile.contactEmail}`}</Col>
           </Row>
           <Row>
-            <Col xs={2} md={2}>{'ID:'}</Col>
+            <Col xs={2} md={2}>
+              {'ID:'}
+            </Col>
             <Col xs={12} md={8}>{`${props.profile.id}`}</Col>
           </Row>
           <br />
           <Row>
             <Col xs={6} md={4}>
-              <Button color="danger" onClick={this.handleShowModal}>{'Remove User'}</Button>
+              <Button color="danger" onClick={this.handleShowModal}>
+                {'Remove User'}
+              </Button>
             </Col>
           </Row>
           <hr />
@@ -76,7 +84,8 @@ class Profile extends React.Component {
             warningText={modalText}
             show={this.state.showWarning}
             handleConfirm={this.handleConfirmModal}
-            handleClose={this.handleCloseModal} />
+            handleClose={this.handleCloseModal}
+          />
         </CardBody>
       </Card>
     );
@@ -90,7 +99,7 @@ Profile.propTypes = {
     address: PropTypes.string
   }),
   subscriptions: PropTypes.shape({
-    items: PropTypes.array,
+    items: PropTypes.array
   }),
   deleteUser: PropTypes.func.isRequired
 };
@@ -104,5 +113,5 @@ function mapStateToProps(state) {
 }
 const mapDispatchToProps = {
   deleteUser: subscriberActions.deleteUser
-}
+};
 export default connect(mapStateToProps, mapDispatchToProps)(Profile);

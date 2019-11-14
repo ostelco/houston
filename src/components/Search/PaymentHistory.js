@@ -1,31 +1,41 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { Table, Card, CardBody, CardHeader, Button, UncontrolledTooltip } from 'reactstrap';
+import {
+  Table,
+  Card,
+  CardBody,
+  CardHeader,
+  Button,
+  UncontrolledTooltip
+} from 'reactstrap';
 
 import { subscriberActions } from '../../actions/subscriber.actions';
 import { convertTimestampToDate } from '../../helpers';
 import WarningModal from '../Shared/WarningModal';
 
-
-export const RefundedItemOption = (props) => {
+export const RefundedItemOption = props => {
   function nope(e) {
     e.preventDefault();
   }
   return (
     <td>
-      <Button color="outline-secondary" onClick={nope} id={props.id}>Refunded..</Button>
+      <Button color="outline-secondary" onClick={nope} id={props.id}>
+        Refunded..
+      </Button>
       <UncontrolledTooltip placement="right" target={props.id}>
-        {`Refunded on ${convertTimestampToDate(props.timestamp)}, ${props.reason}`}
+        {`Refunded on ${convertTimestampToDate(props.timestamp)}, ${
+          props.reason
+        }`}
       </UncontrolledTooltip>
     </td>
   );
-}
+};
 
-export const FreeItemOption = props => (<td />);
+export const FreeItemOption = props => <td />;
 export const HistoryRow = props => {
-  const isRefunded = () => (props.item.refund && props.item.refund.id);
-  const isFreeProduct = () => (props.item.product.price.amount <= 0);
+  const isRefunded = () => props.item.refund && props.item.refund.id;
+  const isFreeProduct = () => props.item.product.price.amount <= 0;
   function onRefund(e) {
     e.preventDefault();
     console.log(`Reverting ${props.item.id}`);
@@ -34,23 +44,28 @@ export const HistoryRow = props => {
 
   function renderOption() {
     if (isRefunded()) {
-      return (<RefundedItemOption {...props.item.refund} />);
+      return <RefundedItemOption {...props.item.refund} />;
     } else if (isFreeProduct()) {
-      return (<FreeItemOption />);
+      return <FreeItemOption />;
     } else {
       return (
-        <td><Button color="outline-primary" onClick={onRefund}>Refund</Button></td>
+        <td>
+          <Button color="outline-primary" onClick={onRefund}>
+            Refund
+          </Button>
+        </td>
       );
     }
   }
   return (
-    <tr >
+    <tr>
       <td>{props.item.product.presentation.productLabel}</td>
       <td>{props.item.product.presentation.priceLabel}</td>
       <td>{convertTimestampToDate(props.item.timestamp)}</td>
       {renderOption()}
-    </tr>);
-}
+    </tr>
+  );
+};
 
 HistoryRow.propTypes = {
   item: PropTypes.shape({
@@ -62,7 +77,7 @@ HistoryRow.propTypes = {
       presentation: PropTypes.shape({
         priceLabel: PropTypes.string,
         productLabel: PropTypes.string
-      }).isRequired,
+      }).isRequired
     }),
     refund: PropTypes.shape({
       id: PropTypes.string.isRequired,
@@ -85,13 +100,13 @@ class PaymentHistory extends React.Component {
     const state = this.state;
     state.showConfirm = false;
     this.setState(state);
-  }
+  };
 
   handleShowConfirm = (id, reason) => {
     const state = { ...this.state, id, reason };
     state.showConfirm = true;
     this.setState(state);
-  }
+  };
 
   handleConfirm = () => {
     this.handleCloseConfirm();
@@ -99,7 +114,7 @@ class PaymentHistory extends React.Component {
     // TODO call the method to give additional data
     console.log(`User confirmed, refunding id:${id}, reason:${reason}`);
     this.props.refundPurchase(this.state.id, this.state.reason);
-  }
+  };
 
   render() {
     const { props } = this;
@@ -108,9 +123,13 @@ class PaymentHistory extends React.Component {
     }
     const refundHeading = 'Confirm refund operartion';
     const refundText = 'Do you really want to refund this transaction ?';
-    const listItems = props.paymentHistory.map((history) =>
-      <HistoryRow item={history} key={history.id} refundPurchase={this.handleShowConfirm} />
-    );
+    const listItems = props.paymentHistory.map(history => (
+      <HistoryRow
+        item={history}
+        key={history.id}
+        refundPurchase={this.handleShowConfirm}
+      />
+    ));
 
     return (
       <Card>
@@ -125,9 +144,7 @@ class PaymentHistory extends React.Component {
                 <th>Options</th>
               </tr>
             </thead>
-            <tbody>
-              {listItems}
-            </tbody>
+            <tbody>{listItems}</tbody>
           </Table>
         </CardBody>
         <WarningModal
@@ -135,7 +152,8 @@ class PaymentHistory extends React.Component {
           warningText={refundText}
           show={this.state.showConfirm}
           handleConfirm={this.handleConfirm}
-          handleClose={this.handleCloseConfirm} />
+          handleClose={this.handleCloseConfirm}
+        />
       </Card>
     );
   }
@@ -159,5 +177,5 @@ function mapStateToProps(state) {
 }
 const mapDispatchToProps = {
   refundPurchase: subscriberActions.refundPurchase
-}
+};
 export default connect(mapStateToProps, mapDispatchToProps)(PaymentHistory);

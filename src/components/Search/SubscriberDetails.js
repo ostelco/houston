@@ -1,13 +1,22 @@
 import React from 'react';
-import { Card, CardBody, CardHeader, Nav, NavItem, NavLink, TabContent, TabPane } from 'reactstrap';
+import {
+  Card,
+  CardBody,
+  CardHeader,
+  Nav,
+  NavItem,
+  NavLink,
+  TabContent,
+  TabPane
+} from 'reactstrap';
 import classnames from 'classnames';
 
-import Context from "./Context";
-import DataUsage from "./DataUsage";
+import Context from './Context';
+import DataUsage from './DataUsage';
 import NotificationEditor from '../Notifications/NotificationEditor';
-import Profile from "./Profile";
-import PaymentHistory from "./PaymentHistory";
-import AuditLogs from "./AuditLogs";
+import Profile from './Profile';
+import PaymentHistory from './PaymentHistory';
+import AuditLogs from './AuditLogs';
 
 class SubscriberDetails extends React.Component {
   constructor(props) {
@@ -17,13 +26,13 @@ class SubscriberDetails extends React.Component {
     };
   }
 
-  toggle = (tab) => {
+  toggle = tab => {
     if (this.state.activeTab !== tab) {
       this.setState({
         activeTab: tab
       });
     }
-  }
+  };
   render() {
     return (
       <div className="container">
@@ -31,7 +40,9 @@ class SubscriberDetails extends React.Component {
           <NavItem>
             <NavLink
               className={classnames({ active: this.state.activeTab === '1' })}
-              onClick={() => { this.toggle('1'); }}
+              onClick={() => {
+                this.toggle('1');
+              }}
             >
               Profile
             </NavLink>
@@ -39,7 +50,9 @@ class SubscriberDetails extends React.Component {
           <NavItem>
             <NavLink
               className={classnames({ active: this.state.activeTab === '2' })}
-              onClick={() => { this.toggle('2'); }}
+              onClick={() => {
+                this.toggle('2');
+              }}
             >
               Purchases
             </NavLink>
@@ -47,7 +60,9 @@ class SubscriberDetails extends React.Component {
           <NavItem>
             <NavLink
               className={classnames({ active: this.state.activeTab === '3' })}
-              onClick={() => { this.toggle('3'); }}
+              onClick={() => {
+                this.toggle('3');
+              }}
             >
               Context
             </NavLink>
@@ -55,7 +70,9 @@ class SubscriberDetails extends React.Component {
           <NavItem>
             <NavLink
               className={classnames({ active: this.state.activeTab === '4' })}
-              onClick={() => { this.toggle('4'); }}
+              onClick={() => {
+                this.toggle('4');
+              }}
             >
               Audit Logs
             </NavLink>

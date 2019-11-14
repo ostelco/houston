@@ -5,27 +5,21 @@ const CLEAR_SUBSCRIBER = 'CLEAR_SUBSCRIBER';
 
 const defaultState = {};
 
-const actions = createActions(
-  SELECT_SUBSCRIBER,
-  CLEAR_SUBSCRIBER);
+const actions = createActions(SELECT_SUBSCRIBER, CLEAR_SUBSCRIBER);
 
-const { 
-  selectSubscriber,
-  clearSubscriber,
-} = actions;
+const { selectSubscriber, clearSubscriber } = actions;
 
+export const currentSubscriberActions = { ...actions };
 
-export const currentSubscriberActions =  { ...actions };
-
- const reducer = handleActions(
+const reducer = handleActions(
   {
     [selectSubscriber]: (state, { payload }) => {
       return { ...payload };
     },
     [clearSubscriber]: () => {
-        return defaultState;
-      },
-    },
+      return defaultState;
+    }
+  },
   defaultState
 );
 
