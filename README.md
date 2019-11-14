@@ -45,7 +45,7 @@ Builds and deploys the app in `dev` environment.<br />
 Open [https://redotter-admin-dev.firebaseapp.com](https://redotter-admin-dev.firebaseapp.com) to view it in the browser.
 
 You should have permission to use `redotter-admin-dev` firebase project.<br />
-Find alloed list of firebase projects by running the `firebase projects:list` in the terminal
+Find allowed list of firebase projects by running the `firebase projects:list`
 
 e.g: 
 ```
