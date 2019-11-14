@@ -37,6 +37,32 @@ Instead, it will copy all the configuration files and the transitive dependencie
 
 You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
 
+## Deployment
+
+### `scripts/deploy-dev.sh`
+
+Builds and deploys the app in `dev` environment.<br />
+Open [https://redotter-admin-dev.firebaseapp.com](https://redotter-admin-dev.firebaseapp.com) to view it in the browser.
+
+You should have permission to use `redotter-admin-dev` firebase project.<br />
+Find alloed list of firebase projects by running the `firebase projects:list` in the terminal
+
+e.g: 
+```
+┌──────────────────────┬────────────────────┬──────────────────────┐
+│ Project Display Name │ Project ID         │ Resource Location ID │
+├──────────────────────┼────────────────────┼──────────────────────┤
+│ redotter-admin       │ redotter-admin     │ europe-west3         │
+├──────────────────────┼────────────────────┼──────────────────────┤
+│ redotter-admin-dev   │ redotter-admin-dev │ europe-west3         │
+└──────────────────────┴────────────────────┴──────────────────────┘
+```
+### `scripts/deploy.sh`
+
+Builds and deploys the app in `production` environment.<br />
+Open [https://redotter-admin.firebaseapp.com](https://redotter-admin.firebaseapp.com) to view it in the browser.
+
+
 ## Learn More
 
 You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
