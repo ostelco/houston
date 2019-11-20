@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   Card,
   CardBody,
@@ -18,101 +18,76 @@ import Profile from './Profile';
 import PaymentHistory from './PaymentHistory';
 import AuditLogs from './AuditLogs';
 
-class SubscriberDetails extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      activeTab: '1'
-    };
-  }
+function ResultTabHeader(props) {
+  const { title, id, activeTab, setActiveTab } = props;
+  const tabId = `${id}`;
 
-  toggle = tab => {
-    if (this.state.activeTab !== tab) {
-      this.setState({
-        activeTab: tab
-      });
-    }
-  };
-  render() {
-    return (
-      <div className="container">
-        <Nav tabs>
-          <NavItem>
-            <NavLink
-              className={classnames({ active: this.state.activeTab === '1' })}
-              onClick={() => {
-                this.toggle('1');
-              }}
-            >
-              Profile
-            </NavLink>
-          </NavItem>
-          <NavItem>
-            <NavLink
-              className={classnames({ active: this.state.activeTab === '2' })}
-              onClick={() => {
-                this.toggle('2');
-              }}
-            >
-              Purchases
-            </NavLink>
-          </NavItem>
-          <NavItem>
-            <NavLink
-              className={classnames({ active: this.state.activeTab === '3' })}
-              onClick={() => {
-                this.toggle('3');
-              }}
-            >
-              Context
-            </NavLink>
-          </NavItem>
-          <NavItem>
-            <NavLink
-              className={classnames({ active: this.state.activeTab === '4' })}
-              onClick={() => {
-                this.toggle('4');
-              }}
-            >
-              Audit Logs
-            </NavLink>
-          </NavItem>
-        </Nav>
-        <TabContent activeTab={this.state.activeTab}>
-          <TabPane tabId="1">
-            <br />
-            <Profile />
-            <br />
-            <DataUsage />
-            <br />
-            <Card>
-              <CardHeader>Push Notifications</CardHeader>
-              <CardBody>
-                <NotificationEditor
-                  submitLabel="Send a message"
-                  titleLabel="Title"
-                  messageLabel="Message"
-                />
-              </CardBody>
-            </Card>
-            <br />
-          </TabPane>
-          <TabPane tabId="2">
-            <br />
-            <PaymentHistory />
-          </TabPane>
-          <TabPane tabId="3">
-            <br />
-            <Context />
-          </TabPane>
-          <TabPane tabId="4">
-            <br />
-            <AuditLogs />
-          </TabPane>
-        </TabContent>
-      </div>
-    );
-  }
+  return (
+    <NavItem>
+      <NavLink
+        className={classnames({ active: activeTab === tabId })}
+        onClick={() => setActiveTab(tabId)}
+      >
+        {title}
+      </NavLink>
+    </NavItem>
+  );
 }
 
-export default SubscriberDetails;
+function ResultTabPane(props) {
+  return (
+    <TabPane tabId={`${props.id}`}>
+      <br />
+      {props.children}
+    </TabPane>
+  );
+}
+
+function ProfilePane() {
+  return (
+    <div>
+      <Profile />
+      <br />
+      <DataUsage />
+      <br />
+      <Card>
+        <CardHeader>Push Notifications</CardHeader>
+        <CardBody>
+          <NotificationEditor
+            submitLabel="Send a message"
+            titleLabel="Title"
+            messageLabel="Message"
+          />
+        </CardBody>
+      </Card>
+      <br />
+    </div>
+  );
+}
+
+export default function SubscriberDetails(props) {
+  const [activeTab, setActiveTab] = useState('0');
+
+  // Construct tab headers.
+  const tabList = ['Profile', 'Purchases', 'Context', 'Audit Logs'];
+  const tabItems = tabList.map((tab, index) => (
+    <ResultTabHeader title={tab} id={index} activeTab={activeTab} setActiveTab={setActiveTab} key={index} />
+  ));
+  // Construct tab panes.
+  const tabPaneList = [<ProfilePane />, <PaymentHistory />, <Context />, <AuditLogs />];
+  const tabPaneItems = tabList.map((pane, index) => (
+    <ResultTabPane id={index} key={index} >{tabPaneList[index]} </ResultTabPane>
+  ));
+
+  return (
+    <div className="container">
+      <Nav tabs>
+        {tabItems}
+      </Nav>
+      <TabContent activeTab={activeTab}>
+        {tabPaneItems}
+      </TabContent>
+    </div>
+  );
+}
+
