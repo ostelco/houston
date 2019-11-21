@@ -71,23 +71,31 @@ export default function SubscriberDetails(props) {
   // Construct tab headers.
   const tabList = ['Profile', 'Purchases', 'Context', 'Audit Logs'];
   const tabItems = tabList.map((tab, index) => (
-    <ResultTabHeader title={tab} id={index} activeTab={activeTab} setActiveTab={setActiveTab} key={index} />
+    <ResultTabHeader
+      title={tab}
+      id={index}
+      activeTab={activeTab}
+      setActiveTab={setActiveTab}
+      key={index}
+    />
   ));
   // Construct tab panes.
-  const tabPaneList = [<ProfilePane />, <PaymentHistory />, <Context />, <AuditLogs />];
+  const tabPaneList = [
+    <ProfilePane />,
+    <PaymentHistory />,
+    <Context />,
+    <AuditLogs />
+  ];
   const tabPaneItems = tabList.map((pane, index) => (
-    <ResultTabPane id={index} key={index} >{tabPaneList[index]} </ResultTabPane>
+    <ResultTabPane id={index} key={index}>
+      {tabPaneList[index]}{' '}
+    </ResultTabPane>
   ));
 
   return (
     <div className="container">
-      <Nav tabs>
-        {tabItems}
-      </Nav>
-      <TabContent activeTab={activeTab}>
-        {tabPaneItems}
-      </TabContent>
+      <Nav tabs>{tabItems}</Nav>
+      <TabContent activeTab={activeTab}>{tabPaneItems}</TabContent>
     </div>
   );
 }
-

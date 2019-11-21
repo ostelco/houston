@@ -6,9 +6,12 @@ export default function Subscription(props) {
   const { subscription } = props;
   return (
     <Row>
-      <Col xs={2} md={2}>Phone number:</Col>
+      <Col xs={2} md={2}>
+        Phone number:
+      </Col>
       <Col xs={12} md={8}>{`${subscription.msisdn}`}</Col>
-    </Row>);
+    </Row>
+  );
 }
 
 Subscription.propTypes = {

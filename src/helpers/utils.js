@@ -16,7 +16,7 @@ export const humanReadableBytes = sizeInBytes => {
     i++;
   } while (sizeInBytes > 1024);
   return `${Math.max(sizeInBytes, 0).toFixed(2)} ${byteUnits[i]}`;
-}
+};
 
 export const convertTimestampToDate = timestamp => {
   const date = new Date(timestamp);
