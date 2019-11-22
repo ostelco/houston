@@ -16,7 +16,8 @@ import {
   subscriptions,
   bundles,
   paymentHistory,
-  auditLogs
+  auditLogs,
+  approvedRegions
 } from './subscriber.reducer';
 
 const appReducer = combineReducers({
@@ -29,7 +30,8 @@ const appReducer = combineReducers({
   subscriptions,
   bundles,
   paymentHistory,
-  auditLogs
+  auditLogs,
+  approvedRegions
 });
 
 function checkForAuthenticationFailures(errorObj) {

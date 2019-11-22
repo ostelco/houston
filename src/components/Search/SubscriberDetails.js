@@ -16,6 +16,7 @@ import DataUsage from './DataUsage';
 import NotificationEditor from '../Notifications/NotificationEditor';
 import Profile from './Profile';
 import PaymentHistory from './PaymentHistory';
+import Tools from './Tools';
 import AuditLogs from './AuditLogs';
 
 function ResultTabHeader(props) {
@@ -50,17 +51,6 @@ function ProfilePane() {
       <br />
       <DataUsage />
       <br />
-      <Card>
-        <CardHeader>Push Notifications</CardHeader>
-        <CardBody>
-          <NotificationEditor
-            submitLabel="Send a message"
-            titleLabel="Title"
-            messageLabel="Message"
-          />
-        </CardBody>
-      </Card>
-      <br />
     </div>
   );
 }
@@ -69,7 +59,7 @@ export default function SubscriberDetails(props) {
   const [activeTab, setActiveTab] = useState('0');
 
   // Construct tab headers.
-  const tabList = ['Profile', 'Purchases', 'Context', 'Audit Logs'];
+  const tabList = ['Profile', 'Purchases', 'Context', 'Audit Logs', 'Tools'];
   const tabItems = tabList.map((tab, index) => (
     <ResultTabHeader
       title={tab}
@@ -84,7 +74,8 @@ export default function SubscriberDetails(props) {
     <ProfilePane />,
     <PaymentHistory />,
     <Context />,
-    <AuditLogs />
+    <AuditLogs />,
+    <Tools />
   ];
   const tabPaneItems = tabList.map((pane, index) => (
     <ResultTabPane id={index} key={index}>

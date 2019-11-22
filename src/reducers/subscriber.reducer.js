@@ -1,3 +1,4 @@
+import _ from 'lodash';
 import { handleActions } from 'redux-actions';
 import { actions } from '../actions/subscriber.actions';
 
@@ -24,6 +25,22 @@ export const context = handleActions(
     [actions.contextByEmailSuccess]: (state, action) => ({
       ...action.payload
     }),
+    [actions.contextByEmailFailure]: (state, action) => ({
+      ...action.payload
+    })
+  },
+  defaultState
+);
+
+export const approvedRegions = handleActions(
+  {
+    [actions.contextByEmailRequest]: (state, action) => ({
+      loading: true
+    }),
+    [actions.contextByEmailSuccess]: (state, action) => {
+      const regions = _.get(action.payload, 'regions', []);
+      return _.filter(regions, { status: 'APPROVED' });
+    },
     [actions.contextByEmailFailure]: (state, action) => ({
       ...action.payload
     })
