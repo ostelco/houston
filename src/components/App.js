@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import {
@@ -15,82 +15,65 @@ import {
 import { authActions } from '../actions/auth.actions';
 import './App.css';
 
-class App extends Component {
-  constructor(props, context) {
-    super(props, context);
-    this.state = {
-      isOpen: false
-    };
+function LoggedInMenu(props) {
+  const { isOpen, logout } = props;
+
+  function handleLogout(event) {
+    event.preventDefault();
+    logout();
   }
 
-  toggle = () => {
-    this.setState({
-      isOpen: !this.state.isOpen
-    });
-  };
+  return (
+    <Collapse isOpen={isOpen} navbar>
+      <Nav className="ml-auto" navbar>
+        <NavItem>
+          <NavLink tag={Link} href="/" to="/">
+            Search
+          </NavLink>
+        </NavItem>
+        <NavItem>
+          <NavLink tag={Link} href="" to="/" onClick={handleLogout}>
+            Logout
+          </NavLink>
+        </NavItem>
+      </Nav>
+    </Collapse>
+  );
+}
 
-  renderMenu() {
-    const { props } = this;
-    return (
-      <Collapse isOpen={this.state.isOpen} navbar>
-        <Nav className="ml-auto" navbar>
-          <NavItem>
-            <NavLink tag={Link} href="/" to="/">
-              Search
-            </NavLink>
-          </NavItem>
-          {/* <NavItem>
-            <NavLink tag={Link} href="/notifications" to="/notifications">Notifications</NavLink>
-          </NavItem> */}
-          <NavItem>
-            <NavLink
-              tag={Link}
-              href=""
-              to="/"
-              onClick={e => {
-                e.preventDefault();
-                props.logout();
-              }}
-            >
-              Logout
-            </NavLink>
-          </NavItem>
+function App(props) {
+  const [isOpen, setIsOpen] = useState(false);
+  const { loggedIn, user, login, logout } = props;
+
+  const userName = user ? user.name + ' : ' + user.email : '';
+  const loggedInMenu = loggedIn ? (
+    <LoggedInMenu isOpen={isOpen} logout={logout} />
+  ) : null;
+  const loggedOutButton = loggedIn ? null : (
+    <Button color="outline-primary" onClick={login}>
+      Log In
+    </Button>
+  );
+
+  return (
+    <div>
+      <Navbar light expand="md">
+        <NavbarBrand>
+          <img
+            src="redotter.png"
+            alt="Red Otter"
+            style={{ width: 60, height: 60, marginTop: -10 }}
+          />
+        </NavbarBrand>
+        <Nav>
+          <NavItem>{userName}</NavItem>
         </Nav>
-      </Collapse>
-    );
-  }
-
-  render() {
-    const { props } = this;
-    const loggedIn = props.loggedIn || false;
-    const userName = props.user
-      ? props.user.name + ' : ' + props.user.email
-      : '';
-
-    return (
-      <div>
-        <Navbar light expand="md">
-          <NavbarBrand>
-            <img
-              src="redotter.png"
-              alt="Red Otter"
-              style={{ width: 60, height: 60, marginTop: -10 }}
-            />
-          </NavbarBrand>
-          <Nav>
-            <NavItem>{userName}</NavItem>
-          </Nav>
-          {!loggedIn && (
-            <Button color="outline-primary" onClick={props.login}>
-              Log In
-            </Button>
-          )}
-          {loggedIn && this.renderMenu()}
-          <NavbarToggler onClick={this.toggle} />
-        </Navbar>
-      </div>
-    );
-  }
+        {loggedOutButton}
+        {loggedInMenu}
+        <NavbarToggler onClick={() => setIsOpen(!isOpen)} />
+      </Navbar>
+    </div>
+  );
 }
 
 function mapStateToProps(state) {
