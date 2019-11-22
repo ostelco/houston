@@ -30,6 +30,10 @@ const REFUND_PAYMENT_REQUEST = 'REFUND_PAYMENT_REQUEST';
 const REFUND_PAYMENT_SUCCESS = 'REFUND_PAYMENT_SUCCESS';
 const REFUND_PAYMENT_FAILURE = 'REFUND_PAYMENT_FAILURE';
 
+const PROVISION_SIM_REQUEST = 'PROVISION_SIM_REQUEST';
+const PROVISION_SIM_SUCCESS = 'PROVISION_SIM_SUCCESS';
+const PROVISION_SIM_FAILURE = 'PROVISION_SIM_FAILURE';
+
 const AUDIT_LOGS_REQUEST = 'AUDIT_LOGS_REQUEST';
 const AUDIT_LOGS_SUCCESS = 'AUDIT_LOGS_SUCCESS';
 const AUDIT_LOGS_FAILURE = 'AUDIT_LOGS_FAILURE';
@@ -65,6 +69,9 @@ export const actions = createActions(
   REFUND_PAYMENT_REQUEST,
   REFUND_PAYMENT_SUCCESS,
   REFUND_PAYMENT_FAILURE,
+  PROVISION_SIM_REQUEST,
+  PROVISION_SIM_SUCCESS,
+  PROVISION_SIM_FAILURE,
   AUDIT_LOGS_REQUEST,
   AUDIT_LOGS_SUCCESS,
   AUDIT_LOGS_FAILURE,
@@ -143,6 +150,19 @@ const putRefundPurchaseById = (id, purchaseRecordId, reason) => ({
     endpoint: `refund/${id}`,
     method: 'PUT',
     params: { purchaseRecordId, reason }
+  }
+});
+
+const postNewSimProfile = (id, region, profileType) => ({
+  [CALL_API]: {
+    actions: [
+      actions.provisionSimRequest,
+      actions.provisionSimSuccess,
+      actions.provisionSimFailure
+    ],
+    endpoint: `simprofile/${id}`,
+    method: 'POST',
+    body: JSON.stringify({ region, profileType })
   }
 });
 
@@ -240,9 +260,27 @@ const deleteUser = () => (dispatch, getState) => {
     return dispatch(deleteUserById(subscriberId)).catch(handleError);
   }
 };
+
+const provisionSim = (region, profileType) => (dispatch, getState) => {
+  const handleError = error => {
+    console.log('Error reported.', error);
+    dispatch(alertActions.alertError(error));
+  };
+
+  // Get the id from the fetched user
+  const subscriberId = _.get(getState(), 'currentSubscriber.id');
+  if (subscriberId) {
+    return dispatch(postNewSimProfile(subscriberId, region, profileType))
+      .then(() => {
+        return dispatch(fetchContextById(subscriberId));
+      })
+      .catch(handleError);
+  }
+};
 export const subscriberActions = {
   getSubscriberList,
   selectCurrentSubscriber,
   refundPurchase,
-  deleteUser
+  deleteUser,
+  provisionSim
 };

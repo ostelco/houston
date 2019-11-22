@@ -46,7 +46,7 @@ const Option = props => {
 };
 
 const ProvisionSim = props => {
-  const { regions } = props;
+  const { regions, provisionSim } = props;
   const [regionIndex, setRegionIndex] = useState(0);
   const [profileIndex, setProfileIndex] = useState(0);
   const [showModal, setShowModal] = useState(false);
@@ -54,15 +54,18 @@ const ProvisionSim = props => {
   if (_.isEmpty(regions)) return null;
   let profileTypes = [{ name: 'iPhone' }, { name: 'Android' }];
 
+  // construct parameters for the provisioning API
+  const parameters = {
+    regionId: regions[regionIndex].id,
+    regionName: regions[regionIndex].name,
+    profileType: profileTypes[profileIndex].name
+  };
   const modalHeading = 'Confirm Provisioning';
-  const modalText = `Do you really want to provision new SIM?`;
+  const modalText = `Do you want to provision new SIM for Region: ${parameters.regionName} with Profile Type: ${parameters.profileType} ?`;
 
   const confirmed = () => {
-    const parameters = {
-      region: regions[regionIndex].id,
-      profileType: profileTypes[profileIndex].name
-    };
     console.log('Confirmed SIM provisioning', parameters);
+    provisionSim(parameters.regionId, parameters.profileType);
     setShowModal(false);
   };
 
@@ -125,7 +128,7 @@ ProvisionSim.propTypes = {
       name: PropTypes.string
     })
   ),
-  deleteUser: PropTypes.func.isRequired
+  provisionSim: PropTypes.func.isRequired
 };
 
 function mapStateToProps(state) {
@@ -137,6 +140,6 @@ function mapStateToProps(state) {
   };
 }
 const mapDispatchToProps = {
-  deleteUser: subscriberActions.deleteUser
+  provisionSim: subscriberActions.provisionSim
 };
 export default connect(mapStateToProps, mapDispatchToProps)(ProvisionSim);
