@@ -101,3 +101,46 @@ export const auditLogs = handleActions(
   },
   []
 );
+
+export const latestSim = handleActions(
+  {
+    [actions.provisionSimRequest]: (state, action) => ({
+      loading: true
+    }),
+    [actions.provisionSimSuccess]: (state, action) => action.payload,
+    [actions.provisionSimFailure]: (state, action) => ({
+      ...action.payload
+    }),
+    //TODO remove later
+    [actions.contextByEmailSuccess]: (state, action) => {
+      const regions = _.get(action.payload, 'regions', []);
+      const firstApproved = _.head(_.filter(regions, { status: 'APPROVED' }));
+      console.log('handle latestSim, contextByEmailSuccess', firstApproved);
+      if (firstApproved) {
+        return firstApproved.simProfiles[0];
+      }
+      return defaultState;
+    },
+    [actions.subscriberByEmailRequest]: (state, action) => defaultState
+  },
+  defaultState
+);
+
+export const allSimProfiles = handleActions(
+  {
+    [actions.contextByEmailRequest]: (state, action) => ({
+      loading: true
+    }),
+    [actions.contextByEmailSuccess]: (state, action) => {
+      const regions = _.get(action.payload, 'regions', []);
+      const approvedRegions = _.filter(regions, { status: 'APPROVED' });
+      return _.flatMap(approvedRegions, region => {
+        return region.simProfiles;
+      });
+    },
+    [actions.contextByEmailFailure]: (state, action) => ({
+      ...action.payload
+    })
+  },
+  defaultState
+);

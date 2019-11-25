@@ -15,6 +15,7 @@ import {
   DropdownMenu
 } from 'reactstrap';
 
+import SimProfileQRCode from './SimProfileQRCode';
 import { subscriberActions } from '../../actions/subscriber.actions';
 import WarningModal from '../Shared/WarningModal';
 
@@ -68,7 +69,7 @@ const ProvisionSim = props => {
     provisionSim(parameters.regionId, parameters.profileType);
     setShowModal(false);
   };
-
+  console.log('props.latestSim ', props.latestSim);
   return (
     <Card>
       <CardHeader>Issue Sim Card</CardHeader>
@@ -107,7 +108,7 @@ const ProvisionSim = props => {
           </Col>
         </Row>
         <hr />
-
+        <SimProfileQRCode simProfile={props.latestSim} />
         <WarningModal
           heading={modalHeading}
           dangerStyle={true}
@@ -132,11 +133,12 @@ ProvisionSim.propTypes = {
 };
 
 function mapStateToProps(state) {
-  const { approvedRegions } = state;
+  const { approvedRegions, latestSim } = state;
   const regions = _.compact(_.map(approvedRegions, 'region'));
   console.log('regions = ', regions);
   return {
-    regions
+    regions,
+    latestSim
   };
 }
 const mapDispatchToProps = {

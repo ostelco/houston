@@ -1,21 +1,12 @@
 import React, { useState } from 'react';
-import {
-  Card,
-  CardBody,
-  CardHeader,
-  Nav,
-  NavItem,
-  NavLink,
-  TabContent,
-  TabPane
-} from 'reactstrap';
+import { Nav, NavItem, NavLink, TabContent, TabPane } from 'reactstrap';
 import classnames from 'classnames';
 
 import Context from './Context';
 import DataUsage from './DataUsage';
-import NotificationEditor from '../Notifications/NotificationEditor';
 import Profile from './Profile';
 import PaymentHistory from './PaymentHistory';
+import SimTools from './SimTools';
 import Tools from './Tools';
 import AuditLogs from './AuditLogs';
 
@@ -59,7 +50,14 @@ export default function SubscriberDetails(props) {
   const [activeTab, setActiveTab] = useState('0');
 
   // Construct tab headers.
-  const tabList = ['Profile', 'Purchases', 'Context', 'Audit Logs', 'Tools'];
+  const tabList = [
+    'Profile',
+    'Purchases',
+    'Context',
+    'Audit Logs',
+    'Sim Tools',
+    'Tools'
+  ];
   const tabItems = tabList.map((tab, index) => (
     <ResultTabHeader
       title={tab}
@@ -75,6 +73,7 @@ export default function SubscriberDetails(props) {
     <PaymentHistory />,
     <Context />,
     <AuditLogs />,
+    <SimTools />,
     <Tools />
   ];
   const tabPaneItems = tabList.map((pane, index) => (

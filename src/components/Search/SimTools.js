@@ -1,29 +1,22 @@
 import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { Col, Row, Card, CardBody, CardHeader, Button } from 'reactstrap';
 
-import NotificationEditor from '../Notifications/NotificationEditor';
 import { subscriberActions } from '../../actions/subscriber.actions';
+import ProvisionSim from './ProvisionSim';
+import AllSimProfiles from './AllSimProfiles';
 
-function Tools(props) {
+function SimTools(props) {
   return (
     <>
-      <Card>
-        <CardHeader>Push Notifications</CardHeader>
-        <CardBody>
-          <NotificationEditor
-            submitLabel="Send a message"
-            titleLabel="Title"
-            messageLabel="Message"
-          />
-        </CardBody>
-      </Card>
+      <ProvisionSim />
+      <br />
+      <AllSimProfiles />
     </>
   );
 }
 
-Tools.propTypes = {
+SimTools.propTypes = {
   profile: PropTypes.shape({
     nickname: PropTypes.string,
     contactEmail: PropTypes.string,
@@ -45,4 +38,4 @@ function mapStateToProps(state) {
 const mapDispatchToProps = {
   deleteUser: subscriberActions.deleteUser
 };
-export default connect(mapStateToProps, mapDispatchToProps)(Tools);
+export default connect(mapStateToProps, mapDispatchToProps)(SimTools);
