@@ -153,7 +153,7 @@ const putRefundPurchaseById = (id, purchaseRecordId, reason) => ({
   }
 });
 
-const postNewSimProfile = (id, region, profileType) => ({
+const postNewSimProfile = (id, regionCode, profileType, alias) => ({
   [CALL_API]: {
     actions: [
       actions.provisionSimRequest,
@@ -162,7 +162,7 @@ const postNewSimProfile = (id, region, profileType) => ({
     ],
     endpoint: `simprofile/${id}`,
     method: 'POST',
-    body: JSON.stringify({ region, profileType })
+    params: { regionCode, profileType, alias }
   }
 });
 
@@ -261,7 +261,10 @@ const deleteUser = () => (dispatch, getState) => {
   }
 };
 
-const provisionSim = (region, profileType) => (dispatch, getState) => {
+const provisionSim = (regionCode, profileType, alias) => (
+  dispatch,
+  getState
+) => {
   const handleError = error => {
     console.log('Error reported.', error);
     dispatch(alertActions.alertError(error));
@@ -270,7 +273,9 @@ const provisionSim = (region, profileType) => (dispatch, getState) => {
   // Get the id from the fetched user
   const subscriberId = _.get(getState(), 'currentSubscriber.id');
   if (subscriberId) {
-    return dispatch(postNewSimProfile(subscriberId, region, profileType))
+    return dispatch(
+      postNewSimProfile(subscriberId, regionCode, profileType, alias)
+    )
       .then(() => {
         return dispatch(fetchContextById(subscriberId));
       })

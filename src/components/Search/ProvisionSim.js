@@ -12,7 +12,8 @@ import {
   Dropdown,
   DropdownToggle,
   DropdownItem,
-  DropdownMenu
+  DropdownMenu,
+  Input
 } from 'reactstrap';
 
 import SimProfileQRCode from './SimProfileQRCode';
@@ -51,18 +52,27 @@ const ProvisionSim = props => {
   const [regionIndex, setRegionIndex] = useState(0);
   const [profileIndex, setProfileIndex] = useState(0);
   const [showModal, setShowModal] = useState(false);
+  const [alias, setAlias] = useState('');
+
   // Render only if we have regions
   if (_.isEmpty(regions)) return null;
-  let profileTypes = [{ name: 'iPhone' }, { name: 'Android' }];
+  let profileTypes = [
+    { id: 'test', name: 'iPhone' },
+    { id: 'test', name: 'Android' }
+  ];
 
   // construct parameters for the provisioning API
   const parameters = {
     regionId: regions[regionIndex].id,
     regionName: regions[regionIndex].name,
-    profileType: profileTypes[profileIndex].name
+    profileType: profileTypes[profileIndex].id
   };
   const modalHeading = 'Confirm Provisioning';
   const modalText = `Do you want to provision new SIM for Region: ${parameters.regionName} with Profile Type: ${parameters.profileType} ?`;
+
+  function onChange(e) {
+    setAlias(e.target.value);
+  }
 
   const confirmed = () => {
     console.log('Confirmed SIM provisioning', parameters);
@@ -96,6 +106,20 @@ const ProvisionSim = props => {
               items={profileTypes}
               selected={profileIndex}
               setSelected={setProfileIndex}
+            />
+          </Col>
+        </Row>
+        <br />
+        <Row>
+          <Col xs={2} md={2}>
+            Alias
+          </Col>
+          <Col xs={12} md={8}>
+            <Input
+              type="text"
+              value={alias}
+              onChange={onChange}
+              placeholder="Enter the alias for simcard"
             />
           </Col>
         </Row>
