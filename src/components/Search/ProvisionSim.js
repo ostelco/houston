@@ -47,6 +47,22 @@ const Option = props => {
   );
 };
 
+const EmptyRegions = () => {
+  return (
+    <Card>
+      <CardHeader>Issue Sim Card</CardHeader>
+      <CardBody>
+        <Row>
+          <Col xs={12} md={8}>
+            There are no approved regions for this user. To issue a new sim, the
+            user has do eKYC
+          </Col>
+        </Row>
+      </CardBody>
+    </Card>
+  );
+};
+
 const ProvisionSim = props => {
   const { regions, provisionSim } = props;
   const [regionIndex, setRegionIndex] = useState(0);
@@ -55,7 +71,8 @@ const ProvisionSim = props => {
   const [alias, setAlias] = useState('');
 
   // Render only if we have regions
-  if (_.isEmpty(regions)) return null;
+  if (_.isEmpty(regions)) return <EmptyRegions />;
+
   let profileTypes = [
     { id: 'iphone', name: 'iPhone' },
     { id: 'android', name: 'Android' },

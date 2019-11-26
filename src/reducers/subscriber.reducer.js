@@ -118,19 +118,15 @@ export const latestSim = handleActions(
 
 export const allSimProfiles = handleActions(
   {
-    [actions.contextByEmailRequest]: (state, action) => ({
-      loading: true
-    }),
-    [actions.contextByEmailSuccess]: (state, action) => {
+    [actions.subscriberByEmailRequest]: (state, action) => defaultState,
+    [actions.allRegionsByIdSuccess]: (state, action) => {
       const regions = _.get(action.payload, 'regions', []);
       const approvedRegions = _.filter(regions, { status: 'APPROVED' });
       return _.flatMap(approvedRegions, region => {
         return region.simProfiles;
       });
     },
-    [actions.contextByEmailFailure]: (state, action) => ({
-      ...action.payload
-    })
+    [actions.allRegionsByIdFailure]: (state, action) => defaultState
   },
   defaultState
 );
