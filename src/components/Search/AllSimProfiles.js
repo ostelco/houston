@@ -8,7 +8,6 @@ import {
   Card,
   CardBody,
   CardHeader,
-  Button,
   Dropdown,
   DropdownToggle,
   DropdownItem,
@@ -74,7 +73,7 @@ const AllSimProfiles = props => {
 };
 
 AllSimProfiles.propTypes = {
-  allSimProfiles: PropTypes.array
+  allSimProfiles: PropTypes.oneOfType([PropTypes.object, PropTypes.array])
 };
 
 function mapStateToProps(state) {

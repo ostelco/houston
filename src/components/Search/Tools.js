@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { Col, Row, Card, CardBody, CardHeader, Button } from 'reactstrap';
+import { Card, CardBody, CardHeader } from 'reactstrap';
 
 import NotificationEditor from '../Notifications/NotificationEditor';
 import { subscriberActions } from '../../actions/subscriber.actions';

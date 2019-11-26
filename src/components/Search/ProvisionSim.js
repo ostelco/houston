@@ -57,15 +57,17 @@ const ProvisionSim = props => {
   // Render only if we have regions
   if (_.isEmpty(regions)) return null;
   let profileTypes = [
-    { id: 'test', name: 'iPhone' },
-    { id: 'test', name: 'Android' }
+    { id: 'iphone', name: 'iPhone' },
+    { id: 'android', name: 'Android' },
+    { id: 'TEST', name: 'Dummy eSim' }
   ];
 
   // construct parameters for the provisioning API
   const parameters = {
     regionId: regions[regionIndex].id,
     regionName: regions[regionIndex].name,
-    profileType: profileTypes[profileIndex].id
+    profileType: profileTypes[profileIndex].id,
+    alias
   };
   const modalHeading = 'Confirm Provisioning';
   const modalText = `Do you want to provision new SIM for Region: ${parameters.regionName} with Profile Type: ${parameters.profileType} ?`;
@@ -75,11 +77,10 @@ const ProvisionSim = props => {
   }
 
   const confirmed = () => {
-    console.log('Confirmed SIM provisioning', parameters);
-    provisionSim(parameters.regionId, parameters.profileType);
+    provisionSim(parameters.regionId, parameters.profileType, parameters.alias);
     setShowModal(false);
+    setAlias('');
   };
-  console.log('props.latestSim ', props.latestSim);
   return (
     <Card>
       <CardHeader>Issue Sim Card</CardHeader>
@@ -159,7 +160,6 @@ ProvisionSim.propTypes = {
 function mapStateToProps(state) {
   const { approvedRegions, latestSim } = state;
   const regions = _.compact(_.map(approvedRegions, 'region'));
-  console.log('regions = ', regions);
   return {
     regions,
     latestSim

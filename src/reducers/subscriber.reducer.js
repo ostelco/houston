@@ -111,16 +111,6 @@ export const latestSim = handleActions(
     [actions.provisionSimFailure]: (state, action) => ({
       ...action.payload
     }),
-    //TODO remove later
-    [actions.contextByEmailSuccess]: (state, action) => {
-      const regions = _.get(action.payload, 'regions', []);
-      const firstApproved = _.head(_.filter(regions, { status: 'APPROVED' }));
-      console.log('handle latestSim, contextByEmailSuccess', firstApproved);
-      if (firstApproved) {
-        return firstApproved.simProfiles[0];
-      }
-      return defaultState;
-    },
     [actions.subscriberByEmailRequest]: (state, action) => defaultState
   },
   defaultState

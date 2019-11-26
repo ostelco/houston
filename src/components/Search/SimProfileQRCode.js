@@ -6,10 +6,12 @@ import QRCode from 'qrcode.react';
 
 const SimProfileQRCode = props => {
   const { simProfile } = props;
-  console.log('SimProfileQRCode', props);
   if (_.isEmpty(simProfile) || simProfile.error) return null;
   if (simProfile.loading) {
     return <Spinner style={{ width: '3rem', height: '3rem' }} />;
+  }
+  if (_.isEmpty(simProfile.iccId)) {
+    return null;
   }
   return (
     <div>
@@ -19,6 +21,15 @@ const SimProfileQRCode = props => {
         </Col>
         <Col xs={12} md={8}>
           {simProfile.iccId}
+        </Col>
+      </Row>
+      <br />
+      <Row>
+        <Col xs={2} md={2}>
+          Alias
+        </Col>
+        <Col xs={12} md={8}>
+          {_.isEmpty(simProfile.alias) ? 'Not specified' : simProfile.alias}
         </Col>
       </Row>
       <br />
