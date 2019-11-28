@@ -16,7 +16,10 @@ import {
   subscriptions,
   bundles,
   paymentHistory,
-  auditLogs
+  auditLogs,
+  approvedRegions,
+  latestSim,
+  allSimProfiles
 } from './subscriber.reducer';
 
 const appReducer = combineReducers({
@@ -29,7 +32,10 @@ const appReducer = combineReducers({
   subscriptions,
   bundles,
   paymentHistory,
-  auditLogs
+  auditLogs,
+  approvedRegions,
+  latestSim,
+  allSimProfiles
 });
 
 function checkForAuthenticationFailures(errorObj) {

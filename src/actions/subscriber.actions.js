@@ -30,6 +30,10 @@ const REFUND_PAYMENT_REQUEST = 'REFUND_PAYMENT_REQUEST';
 const REFUND_PAYMENT_SUCCESS = 'REFUND_PAYMENT_SUCCESS';
 const REFUND_PAYMENT_FAILURE = 'REFUND_PAYMENT_FAILURE';
 
+const PROVISION_SIM_REQUEST = 'PROVISION_SIM_REQUEST';
+const PROVISION_SIM_SUCCESS = 'PROVISION_SIM_SUCCESS';
+const PROVISION_SIM_FAILURE = 'PROVISION_SIM_FAILURE';
+
 const AUDIT_LOGS_REQUEST = 'AUDIT_LOGS_REQUEST';
 const AUDIT_LOGS_SUCCESS = 'AUDIT_LOGS_SUCCESS';
 const AUDIT_LOGS_FAILURE = 'AUDIT_LOGS_FAILURE';
@@ -37,6 +41,10 @@ const AUDIT_LOGS_FAILURE = 'AUDIT_LOGS_FAILURE';
 const DELETE_USER_REQUEST = 'DELETE_USER_REQUEST';
 const DELETE_USER_SUCCESS = 'DELETE_USER_SUCCESS';
 const DELETE_USER_FAILURE = 'DELETE_USER_FAILURE';
+
+const ALL_REGIONS_BY_ID_REQUEST = 'ALL_REGIONS_BY_ID_REQUEST';
+const ALL_REGIONS_BY_ID_SUCCESS = 'ALL_REGIONS_BY_ID_SUCCESS';
+const ALL_REGIONS_BY_ID_FAILURE = 'ALL_REGIONS_BY_ID_FAILURE';
 
 // Used by global reducer.
 export const subscriberConstants = {
@@ -65,12 +73,18 @@ export const actions = createActions(
   REFUND_PAYMENT_REQUEST,
   REFUND_PAYMENT_SUCCESS,
   REFUND_PAYMENT_FAILURE,
+  PROVISION_SIM_REQUEST,
+  PROVISION_SIM_SUCCESS,
+  PROVISION_SIM_FAILURE,
   AUDIT_LOGS_REQUEST,
   AUDIT_LOGS_SUCCESS,
   AUDIT_LOGS_FAILURE,
   DELETE_USER_REQUEST,
   DELETE_USER_SUCCESS,
-  DELETE_USER_FAILURE
+  DELETE_USER_FAILURE,
+  ALL_REGIONS_BY_ID_REQUEST,
+  ALL_REGIONS_BY_ID_SUCCESS,
+  ALL_REGIONS_BY_ID_FAILURE
 );
 
 const fetchSubscriberById = id => ({
@@ -146,6 +160,31 @@ const putRefundPurchaseById = (id, purchaseRecordId, reason) => ({
   }
 });
 
+const postNewSimProfile = (id, regionCode, profileType, alias) => ({
+  [CALL_API]: {
+    actions: [
+      actions.provisionSimRequest,
+      actions.provisionSimSuccess,
+      actions.provisionSimFailure
+    ],
+    endpoint: `simprofile/${id}`,
+    method: 'POST',
+    params: { regionCode, profileType, alias }
+  }
+});
+
+const fetchAllRegionsById = id => ({
+  [CALL_API]: {
+    actions: [
+      actions.allRegionsByIdRequest,
+      actions.allRegionsByIdSuccess,
+      actions.allRegionsByIdFailure
+    ],
+    endpoint: `context/${id}`,
+    method: 'GET'
+  }
+});
+
 const fetchAuditLogsById = id => ({
   [CALL_API]: {
     actions: [
@@ -202,6 +241,7 @@ const selectCurrentSubscriber = subscriber => (dispatch, getState) => {
   dispatch(fetchContextById(subscriber.id)).catch(handleError);
   dispatch(fetchAuditLogsById(subscriber.id)).catch(handleError);
   dispatch(fetchSubscriptionsById(subscriber.id)).catch(handleError);
+  dispatch(fetchAllRegionsById(subscriber.id)).catch(handleError);
   return dispatch(fetchBundlesById(subscriber.id))
     .then(() => {
       return dispatch(fetchPaymentHistoryById(subscriber.id));
@@ -240,9 +280,32 @@ const deleteUser = () => (dispatch, getState) => {
     return dispatch(deleteUserById(subscriberId)).catch(handleError);
   }
 };
+
+const provisionSim = (regionCode, profileType, alias) => (
+  dispatch,
+  getState
+) => {
+  const handleError = error => {
+    console.log('Error reported.', error);
+    dispatch(alertActions.alertError(error));
+  };
+
+  // Get the id from the fetched user
+  const subscriberId = _.get(getState(), 'currentSubscriber.id');
+  if (subscriberId) {
+    return dispatch(
+      postNewSimProfile(subscriberId, regionCode, profileType, alias)
+    )
+      .then(() => {
+        return dispatch(fetchAllRegionsById(subscriberId));
+      })
+      .catch(handleError);
+  }
+};
 export const subscriberActions = {
   getSubscriberList,
   selectCurrentSubscriber,
   refundPurchase,
-  deleteUser
+  deleteUser,
+  provisionSim
 };

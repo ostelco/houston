@@ -1,3 +1,4 @@
+import _ from 'lodash';
 import { handleActions } from 'redux-actions';
 import { actions } from '../actions/subscriber.actions';
 
@@ -24,6 +25,22 @@ export const context = handleActions(
     [actions.contextByEmailSuccess]: (state, action) => ({
       ...action.payload
     }),
+    [actions.contextByEmailFailure]: (state, action) => ({
+      ...action.payload
+    })
+  },
+  defaultState
+);
+
+export const approvedRegions = handleActions(
+  {
+    [actions.contextByEmailRequest]: (state, action) => ({
+      loading: true
+    }),
+    [actions.contextByEmailSuccess]: (state, action) => {
+      const regions = _.get(action.payload, 'regions', []);
+      return _.filter(regions, { status: 'APPROVED' });
+    },
     [actions.contextByEmailFailure]: (state, action) => ({
       ...action.payload
     })
@@ -83,4 +100,33 @@ export const auditLogs = handleActions(
     })
   },
   []
+);
+
+export const latestSim = handleActions(
+  {
+    [actions.provisionSimRequest]: (state, action) => ({
+      loading: true
+    }),
+    [actions.provisionSimSuccess]: (state, action) => action.payload,
+    [actions.provisionSimFailure]: (state, action) => ({
+      ...action.payload
+    }),
+    [actions.subscriberByEmailRequest]: (state, action) => defaultState
+  },
+  defaultState
+);
+
+export const allSimProfiles = handleActions(
+  {
+    [actions.subscriberByEmailRequest]: (state, action) => defaultState,
+    [actions.allRegionsByIdSuccess]: (state, action) => {
+      const regions = _.get(action.payload, 'regions', []);
+      const approvedRegions = _.filter(regions, { status: 'APPROVED' });
+      return _.flatMap(approvedRegions, region => {
+        return region.simProfiles;
+      });
+    },
+    [actions.allRegionsByIdFailure]: (state, action) => defaultState
+  },
+  defaultState
 );
