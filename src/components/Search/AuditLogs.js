@@ -57,6 +57,7 @@ const AuditLogs = ({ auditLogs }) => {
       Header: 'Message',
       id: '3',
       accessor: 'message',
+      style: { whiteSpace: 'unset' },
       filterMethod: (filter, row) => _.includes(row[filter.id], filter.value)
     }
   ];
